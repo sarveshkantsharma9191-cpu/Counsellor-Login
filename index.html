@@ -7,7 +7,7 @@
   <body>
     <h2>Login with Gmail</h2>
     <div id="g_id_onload"
-         data-client_id="YOUR_CLIENT_ID.apps.googleusercontent.com"
+         data-client_id="887130931128-mevrb3v6ros4t6elaivotb4ggaksodig.apps.googleusercontent.com.apps.googleusercontent.com"
          data-context="signin"
          data-ux_mode="popup"
          data-callback="handleCredentialResponse"
@@ -23,7 +23,7 @@
     <script>
       function handleCredentialResponse(response) {
         const decoded = parseJwt(response.credential);
-        window.location.href = "YOUR_APPS_SCRIPT_WEBAPP_URL?email=" + encodeURIComponent(decoded.email);
+        window.location.href = "https://script.google.com/macros/s/AKfycbwUOmgUOr8IwF4ja2j7Wqe6OLPCV49cAeQwAvYkUv6O22kCzwjDHagQyORGIjv3LQO8/exec?email=" + encodeURIComponent(decoded.email);
       }
 
       function parseJwt(token) {
