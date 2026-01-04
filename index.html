@@ -23,7 +23,7 @@
     <script>
       function handleCredentialResponse(response) {
         const decoded = parseJwt(response.credential);
-        window.location.href = "https://script.google.com/macros/s/AKfycbwUOmgUOr8IwF4ja2j7Wqe6OLPCV49cAeQwAvYkUv6O22kCzwjDHagQyORGIjv3LQO8/exec?email=" + encodeURIComponent(decoded.email);
+        window.location.href = "https://script.google.com/macros/s/AKfycbyFhSnC7m9Bp5VeK8LmYs4tOkWHt5_wqcqn9ICuBDoE2Y4csve-kkg1T81vLAuLfAVu/exec?email=" + encodeURIComponent(decoded.email);
       }
 
       function parseJwt(token) {
