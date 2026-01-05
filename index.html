@@ -3,22 +3,29 @@
   <head>
     <title>Counsellor Login</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 40px; background-color: #f9f9f9; }
+      .container { max-width: 600px; margin: auto; background: #fff; padding: 30px; border-radius: 8px; text-align: center; }
+      h2 { color: #333; }
+    </style>
   </head>
   <body>
-    <h2>Login with Gmail</h2>
-    <div id="g_id_onload"
-         data-client_id="887130931128-mevrb3v6ros4t6elaivotb4ggaksodig.apps.googleusercontent.com"
-         data-context="signin"
-         data-ux_mode="popup"
-         data-callback="handleCredentialResponse"
-         data-auto_prompt="false">
-    </div>
-    <div class="g_id_signin"
-         data-type="standard"
-         data-shape="pill"
-         data-theme="outline"
-         data-text="signin_with"
-         data-size="large">
+    <div class="container">
+      <h2>Login with Gmail</h2>
+      <div id="g_id_onload"
+           data-client_id="887130931128-mevrb3v6ros4t6elaivotb4ggaksodig.apps.googleusercontent.com"
+           data-context="signin"
+           data-ux_mode="popup"
+           data-callback="handleCredentialResponse"
+           data-auto_prompt="false">
+      </div>
+      <div class="g_id_signin"
+           data-type="standard"
+           data-shape="pill"
+           data-theme="outline"
+           data-text="signin_with"
+           data-size="large">
+      </div>
     </div>
 
     <script>
@@ -27,11 +34,10 @@
       function handleCredentialResponse(response) {
         idToken = response.credential;
 
-        // Extract email from token
         const userInfo = parseJwt(idToken);
         const userEmail = encodeURIComponent(userInfo.email);
 
-        // Redirect to Apps Script dashboard
+        // ✅ Redirect to Apps Script CRM dashboard
         window.location.href = "https://script.google.com/macros/s/AKfycbxCYB1bTxmT84dXLeEltz8S9BINaWAk18n5RRV6QflnzvxopU_Qro9KjWQkJDBtKum8/exec?email=" + userEmail;
       }
 
