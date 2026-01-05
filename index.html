@@ -21,34 +21,73 @@
          data-size="large">
     </div>
 
+    <div id="dashboard" style="display:none;">
+      <h2>Import Clients CSV</h2>
+      <input type="file" id="csvFile" accept=".csv" />
+      <button onclick="uploadCSV()">Upload</button>
+      <div id="status"></div>
+    </div>
+
     <script>
+      let idToken = "";
+
       async function handleCredentialResponse(response) {
-        const idToken = response.credential;
+        idToken = response.credential;
 
-        // Send token to Apps Script backend
-        try {
-          const res = await fetch("https://script.google.com/macros/s/AKfycbyFhSnC7m9Bp5VeK8LmYs4tOkWHt5_wqcqn9ICuBDoE2Y4csve-kkg1T81vLAuLfAVu/exec", {
-            method: "POST",
-            headers: {
-              "Authorization": "Bearer " + idToken,
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ action: "getClients" })
-          });
+        // Show dashboard after login
+        document.getElementById("dashboard").style.display = "block";
 
-          const data = await res.json();
-          if (data.status === "ok") {
-            // Replace page with backend-rendered HTML
-            document.open();
-            document.write(data.html);
-            document.close();
-          } else {
-            alert("Login failed: " + (data.error || "Unknown error"));
-          }
-        } catch (err) {
-          console.error("Error contacting backend:", err);
-          alert("⚠️ Could not reach backend.");
+        // Optionally fetch clients immediately
+        const res = await fetch("https://script.google.com/macros/s/AKfycbyFhSnC7m9Bp5VeK8LmYs4tOkWHt5_wqcqn9ICuBDoE2Y4csve-kkg1T81vLAuLfAVu/exec", {
+          method: "POST",
+          headers: {
+            "Authorization": "Bearer " + idToken,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ action: "getClients" })
+        });
+        const data = await res.json();
+        if (data.status === "ok") {
+          document.open();
+          document.write(data.html);
+          document.close();
         }
+      }
+
+      async function uploadCSV() {
+        const file = document.getElementById("csvFile").files[0];
+        if (!file) {
+          alert("Please select a CSV file first.");
+          return;
+        }
+
+        document.getElementById("status").innerHTML = "⏳ Upload in progress...";
+
+        const reader = new FileReader();
+        reader.onload = async function(e) {
+          try {
+            const res = await fetch("https://script.google.com/macros/s/AKfycbyFhSnC7m9Bp5VeK8LmYs4tOkWHt5_wqcqn9ICuBDoE2Y4csve-kkg1T81vLAuLfAVu/exec", {
+              method: "POST",
+              headers: {
+                "Authorization": "Bearer " + idToken,
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({ action: "importCSV", csvString: e.target.result })
+            });
+
+            const data = await res.json();
+            if (data.status === "ok") {
+              document.getElementById("status").innerHTML = data.message;
+              // Reload clients tab
+              handleCredentialResponse({ credential: idToken });
+            } else {
+              document.getElementById("status").innerHTML = "❌ Upload failed: " + (data.error || "Unknown error");
+            }
+          } catch (err) {
+            document.getElementById("status").innerHTML = "⚠️ Error: " + err.message;
+          }
+        };
+        reader.readAsText(file);
       }
     </script>
   </body>
