@@ -37,7 +37,7 @@
         const userInfo = parseJwt(idToken);
         const userEmail = encodeURIComponent(userInfo.email);
 
-        // ✅ Redirect to Apps Script CRM dashboard
+        // ✅ Redirect to Apps Script CRM dashboard with tabs
         window.location.href = "https://script.google.com/macros/s/AKfycbxCYB1bTxmT84dXLeEltz8S9BINaWAk18n5RRV6QflnzvxopU_Qro9KjWQkJDBtKum8/exec?email=" + userEmail;
       }
 
