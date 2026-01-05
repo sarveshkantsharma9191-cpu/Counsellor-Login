@@ -4,9 +4,22 @@
     <title>Counsellor Login</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
-      body { font-family: Arial, sans-serif; margin: 40px; background-color: #f9f9f9; }
-      .container { max-width: 600px; margin: auto; background: #fff; padding: 30px; border-radius: 8px; text-align: center; }
-      h2 { color: #333; }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+        background-color: #f9f9f9;
+      }
+      .container {
+        max-width: 600px;
+        margin: auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        text-align: center;
+      }
+      h2 {
+        color: #333;
+      }
     </style>
   </head>
   <body>
@@ -37,15 +50,22 @@
         const userInfo = parseJwt(idToken);
         const userEmail = encodeURIComponent(userInfo.email);
 
-        // ✅ Redirect to Apps Script CRM dashboard with tabs
-        window.location.href = "https://script.google.com/macros/s/AKfycbxCYB1bTxmT84dXLeEltz8S9BINaWAk18n5RRV6QflnzvxopU_Qro9KjWQkJDBtKum8/exec?email=" + userEmail;
+        // ✅ Redirect to Apps Script CRM dashboard (landing page with CSV + tabs)
+        window.location.href =
+          "https://script.google.com/macros/s/AKfycbxCYB1bTxmT84dXLeEltz8S9BINaWAk18n5RRV6QflnzvxopU_Qro9KjWQkJDBtKum8/exec?email=" +
+          userEmail;
       }
 
       function parseJwt(token) {
         const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
+        const jsonPayload = decodeURIComponent(
+          atob(base64)
+            .split('')
+            .map(function (c) {
+              return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            })
+            .join('')
+        );
         return JSON.parse(jsonPayload);
       }
     </script>
