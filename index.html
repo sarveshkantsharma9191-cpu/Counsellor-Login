@@ -40,12 +40,14 @@
         // Optionally fetch clients immediately
         const res = await fetch("https://script.google.com/macros/s/AKfycbyFhSnC7m9Bp5VeK8LmYs4tOkWHt5_wqcqn9ICuBDoE2Y4csve-kkg1T81vLAuLfAVu/exec", {
           method: "POST",
+          mode: "cors", // ✅ ensure proper CORS handling
           headers: {
             "Authorization": "Bearer " + idToken,
             "Content-Type": "application/json"
           },
           body: JSON.stringify({ action: "getClients" })
         });
+
         const data = await res.json();
         if (data.status === "ok") {
           document.open();
@@ -68,6 +70,7 @@
           try {
             const res = await fetch("https://script.google.com/macros/s/AKfycbyFhSnC7m9Bp5VeK8LmYs4tOkWHt5_wqcqn9ICuBDoE2Y4csve-kkg1T81vLAuLfAVu/exec", {
               method: "POST",
+              mode: "cors", // ✅ ensure proper CORS handling
               headers: {
                 "Authorization": "Bearer " + idToken,
                 "Content-Type": "application/json"
